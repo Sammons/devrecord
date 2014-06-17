@@ -13,7 +13,7 @@ app.use(function(req,res,next){
     } else {
         req.is_mobile = false;
     }
-    next(req, res);
+    next(null,req, res);
 })
 
 var debug = process.env.DEBUG;
