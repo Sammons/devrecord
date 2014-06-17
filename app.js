@@ -33,7 +33,7 @@ app.get('/', function(inc,out) {
     console.log(inc);
     if (inc.is_mobile && ! /mobile/.test(inc.url)) {
       console.log('mobile sent');
-      return inc.redirect('/?mobile=true');
+      return out.redirect('/?mobile=true');
     }
     else return out.end(renderer());
 
