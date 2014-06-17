@@ -60,7 +60,7 @@ body, html {
 	display: inline-block;
 	margin-left: 10px;
 	margin-right: 10px;
-	width: 360px;
+	width: 370px;
 	vertical-align: top;
 }
 
@@ -70,7 +70,7 @@ body, html {
 }
 
 .red {
-	color: rgba(255,0,0,0.4);
+	color: rgba(255,0,0,0.6);
 }
 
 .small {
@@ -78,5 +78,5 @@ body, html {
 }
 
 #main-strip .green {
-	color: darkgreen;
+	color: green;
 }

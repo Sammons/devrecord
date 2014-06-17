@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Devrecord - Home</title>
 	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
 
@@ -9,6 +10,13 @@
 
 	<script type="text/javascript">
 	$(document).ready(function() {
+		if (/mobile/.test(window.location.href))
+		{
+			$('#header').css('font-size','18px')
+			$('#main-strip').css('height','150%');
+			$('#main-strip').width('350px');
+			$('.subject').css('padding','0px').css('width','350px')
+		}
 
 		function mumbleBenPresent() {
 			$('#mumble-status')
