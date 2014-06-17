@@ -17,7 +17,7 @@ app.use(function(req,res,next){
 
 var debug = process.env.DEBUG;
 
-var index = require('fs').readFileSync('./public/index.html');
+var index = require('fs').readFileSync('./public/default.html');
 
 var renderatstart = function() {
     return index;
