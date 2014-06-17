@@ -27,7 +27,7 @@ app.use(favicon(__dirname+'/public/images/logo.ico'));
 app.use(express.static('./public'));
 
 app.get('/', function(inc,out) {
-    if (inc.url.search('mobile') || !inc.is_mobile) return inc.end(renderer(), 200);
+    if (/mobile/.test(inc.url) || !inc.is_mobile) return inc.end(renderer(), 200);
     inc.redirect('/?mobile=true');
 });
 
