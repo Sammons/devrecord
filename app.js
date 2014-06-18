@@ -73,7 +73,7 @@ var server = app.listen(app.get('port'), function() {
 });
 
 var sparkLogListener = net.createServer(function(socket){
-    socket.on('data',function(e,d) {
+    socket.on('data',function(d) {
         console.log(d);
         sparkStatement = d+'';
     });
