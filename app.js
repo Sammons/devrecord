@@ -65,12 +65,15 @@ app.get('/spark',function(i,o) {
 
 app.get('/red',function(i,o) {
     command('R');
+    o.end()
 })
 app.get('/blue',function(i,o){
     command('B');
+    o.end()
 })
 app.get('/green',function(i,o){
     command('G');
+    o.end()
 })
 /// catch 404 and forwarding to error handler
 app.use(function(req, res) {
