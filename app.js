@@ -59,7 +59,7 @@ app.use(function(req, res) {
 });
 
 
-app.set('port', process.env.DEVRECORD_PORT || 3001);
+app.set('port', process.env.DEVRECORD_PORT || 80);
 
 var server = app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);
