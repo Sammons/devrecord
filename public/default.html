@@ -13,7 +13,6 @@
 		if (/mobile/.test(window.location.href))
 		{
 			$('#header').css('font-size','18px')
-			$('#main-strip').css('height','160%');
 			$('#main-strip').width('350px');
 			$('.subject').css('padding','0px').css('width','350px')
 		}
@@ -50,6 +49,9 @@
 		$('#mumble-status').text('Refreshing...')
 		refreshMumbleStuff();
 		setInterval(refreshMumbleStuff,5000);
+
+
+
 	})
 	</script>
 </head>
@@ -104,6 +106,30 @@
 
 	<!-- we aren't supposed to do it this way, but it works really well -->
 	<div class = "spacer"> </div>
+
+	<div class = "subject">
+		<h4>Spark Stream</h4>
+		<canvas id="videoCanvas" width="640" height="480">
+			<p>
+				Please use a browser that supports the Canvas Element, like
+				<a href="http://www.google.com/chrome">Chrome</a>,
+				<a href="http://www.mozilla.com/firefox/">Firefox</a>,
+				<a href="http://www.apple.com/safari/">Safari</a> or Internet Explorer 10
+			</p>
+		</canvas>
+		<script type="text/javascript" src="jsmpg.js"></script>
+		<script type="text/javascript">
+			// Show loading notice
+			var canvas = document.getElementById('videoCanvas');
+			var ctx = canvas.getContext('2d');
+			ctx.fillStyle = '#444';
+			ctx.fillText('Loading...', canvas.width/2-30, canvas.height/3);
+
+			// Setup the WebSocket connection and start the player
+			var client = new WebSocket( 'ws://devrecord.com:8084/' );
+			var player = new jsmpeg(client, {canvas:canvas});
+		</script>
+	</div>
 
 </div>
 

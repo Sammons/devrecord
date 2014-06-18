@@ -30,7 +30,7 @@ body, html {
 }
 #main-strip {
 	width: 800px;
-	height: 100%;
+	/*height: 100%;*/
 	margin: auto;
 	background-color: rgba(255,255,255,0.1);
 	padding-left: 10px;
