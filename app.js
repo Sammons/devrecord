@@ -87,7 +87,6 @@ var server = app.listen(app.get('port'), function() {
 var sparkLogListener = net.createServer(function(socket){
     socks.push(socket);
     socket.on('data',function(d) {
-        console.log(d);
         sparkStatement = d+'';
         setTimeout(function() {
             sparkStatement = 'press my buttons!';
