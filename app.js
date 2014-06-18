@@ -1,5 +1,6 @@
 var express = require('express');
 var favicon = require('serve-favicon');
+var net = require('net');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
@@ -71,5 +72,12 @@ var server = app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);
 });
 
+var sparkLogListener = net.createServer(function(socket){
+    socket.on('data',function(e,d) {
+        console.log(d);
+        sparkStatement = d+'';
+    });
+});
+sparkLogListener.listen(6000);
 
 module.exports = app;
