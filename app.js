@@ -53,12 +53,25 @@ app.get('/onfloo',function(inc,out) {
         })
 })
 
+var socks = []
 var sparkStatement = 'none yet!';
+var command = function(ch) {
+    for (var i in socks) socks[i].write(ch);
+}
 
 app.get('/spark',function(i,o) {
     o.end(sparkStatement);
 })
 
+app.get('/red',function(i,o) {
+    command('R');
+})
+app.get('/blue',function(i,o){
+    command('B');
+})
+app.get('/green',function(i,o){
+    command('G');
+})
 /// catch 404 and forwarding to error handler
 app.use(function(req, res) {
     res.status(404);
@@ -71,8 +84,8 @@ app.set('port', process.env.DEVRECORD_PORT || 80);
 var server = app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);
 });
-
 var sparkLogListener = net.createServer(function(socket){
+    socks.push(socket);
     socket.on('data',function(d) {
         console.log(d);
         sparkStatement = d+'';
@@ -82,12 +95,5 @@ var sparkLogListener = net.createServer(function(socket){
     });
 });
 sparkLogListener.listen(6000);
-
-var socks = [];
-var sparkCommander = net.createServer(function(socket) {
-    console.log('joined')
-    socks.push(socket);
-})
-sparkCommander.listen(7000);
 
 module.exports = app;

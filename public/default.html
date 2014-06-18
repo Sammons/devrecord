@@ -58,8 +58,13 @@
 
 		setInterval(refreshSparkMessages,120);
 
+		function command(com) {
+			$.get('/'+com);
+		}
 
-
+		$('#blue').click(function(){ command('blue') })
+		$('#green').click(function(){ command('green') })
+		$('#red').click(function(){ command('red') })
 	})
 	</script>
 </head>
@@ -145,6 +150,9 @@
 		<p id="words">
 			
 		</p>
+		<button id="blue">BLUE</button>
+		<button id="red">RED</button>
+		<button id="green">GREEN</button>
 	</div>
 
 </div>
