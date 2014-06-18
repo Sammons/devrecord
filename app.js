@@ -76,8 +76,18 @@ var sparkLogListener = net.createServer(function(socket){
     socket.on('data',function(d) {
         console.log(d);
         sparkStatement = d+'';
+        setTimeout(function() {
+            sparkStatement = 'press my buttons!';
+        },2000)
     });
 });
 sparkLogListener.listen(6000);
+
+var socks = [];
+var sparkCommander = net.createServer(function(socket) {
+    console.log('joined')
+    socks.push(socket);
+})
+sparkCommander.listen(7000);
 
 module.exports = app;

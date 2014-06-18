@@ -52,13 +52,13 @@
 
 		function refreshSparkMessages() {
 			$.get('/spark',function(data) {
-				var words = $('#words').text(data);
+				var words = $('#words').text('Spark Core says: '+data);
 			})
 		}
 
 		setInterval(refreshSparkMessages,120);
 
-		
+
 
 	})
 	</script>
@@ -141,7 +141,7 @@
 	</div>
 
 	<div class = "subject">
-		<h4>Spark Interface</h4>
+		<h4>Spark Console</h4>
 		<p id="words">
 			
 		</p>
