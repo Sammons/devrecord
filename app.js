@@ -52,6 +52,12 @@ app.get('/onfloo',function(inc,out) {
         })
 })
 
+var sparkStatement = 'none yet!';
+
+app.get('/spark',function(i,o) {
+    o.end(sparkStatement);
+})
+
 /// catch 404 and forwarding to error handler
 app.use(function(req, res) {
     res.status(404);

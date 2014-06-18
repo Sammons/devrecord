@@ -50,7 +50,15 @@
 		refreshMumbleStuff();
 		setInterval(refreshMumbleStuff,5000);
 
+		function refreshSparkMessages() {
+			$.get('/spark',function(data) {
+				var words = $('#words').text(data);
+			})
+		}
 
+		setInterval(refreshSparkMessages,120);
+
+		
 
 	})
 	</script>
@@ -130,6 +138,13 @@
 			var client = new WebSocket( 'ws://devrecord.com:8084/' );
 			var player = new jsmpeg(client, {canvas:canvas});
 		</script>
+	</div>
+
+	<div class = "subject">
+		<h4>Spark Interface</h4>
+		<p id="words">
+			
+		</p>
 	</div>
 
 </div>
