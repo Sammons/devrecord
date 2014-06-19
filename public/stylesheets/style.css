@@ -80,3 +80,7 @@ body, html {
 #main-strip .green {
 	color: green;
 }
+
+#videoCanvas:active {
+	jsmpeg.pause();
+}
