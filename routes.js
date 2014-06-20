@@ -24,7 +24,7 @@ var add_html_routes = function(app) { // routes that serve html
 	var pages = {};//object for storing pages
 
 	pages['home'] = get_renderer(__dirname+'/public/default.html', true);// ok to be synchronous here since its only on startup
-	pages['404']   = function() {return '404, sorry'};
+	pages['404']  = function(req, res) { res.status(404), res.end(); };
 
 	app.get('/',function(req,res) {
 		res.redirect('./pages/home');
@@ -40,12 +40,12 @@ var add_html_routes = function(app) { // routes that serve html
 
 var add_json_routes = function(app) {
 	
-	app.get('/onmumble',function(req,res){
+	app.get('/onmumble',function(req,resp){
 	    //this gets the json object of the mumble server's stuff
 	    request(
 	    	'https://www.mymumble.com/srv/status/json/?ip=206.217.198.148&port=6132'
 	        , function(e, res, bod) {
-	            res.end(bod);
+	            resp.end(bod);
 	        })
 	})
 

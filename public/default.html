@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script type="text/javascript" src="jsmpg.js"></script>
+	<script type="text/javascript" src="../jsmpg.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function() {
 		if (/mobile/.test(window.location.href))
@@ -50,9 +50,46 @@
 		refreshMumbleStuff();
 		setInterval(refreshMumbleStuff,5000);
 
+
+		function send_command(val, spark) {
+			$.post('/spark/'+spark+'/'+val)
+		}
+
 		function refreshSparkMessages() {
 			$.get('/spark',function(data) {
-				var words = $('#words').text('Spark Core says: '+data);
+				var sparkArry = [];
+				var sparks = JSON.parse(data);
+				for (var i in sparks) {
+					var uis = $('.spark');
+					for (var j in uis) {
+						$('#spark-'+i).addClass('found');
+						if (!$('#spark-'+i).length > 0)
+						(function() {
+						$('#spark-ui').append(
+							'<div  class = "spark found" id="spark-' + i + '">' +
+							'<span class = "name">' + sparks[i].name + '</span>' +
+							'<span class = "statement"></span>' +
+							'<input type=text placeholder="255,255,255 (r,g,b)">' +
+							'<button>Go</button></div>'
+						).find('button').click(function(){
+							var val = $('#spark-'+i+' input').val();
+							$('#spark-'+i+' input').text('').val('');
+							send_command(val, i)
+						})
+						$('#spark-'+i+' input').keypress(function(e){
+							if (e.keyCode == 13) {
+								var val = $('#spark-'+i+' input').val();
+								$('#spark-'+i+' input').text('').val('');
+								send_command(val, i)
+							}
+						})
+						})()
+					}
+				}
+				$('.spark').each(function(i,e) {
+					if (!$(e).hasClass('found')) $(e).remove();
+				});
+				$('.found').removeClass('found');
 			})
 		}
 
@@ -101,7 +138,7 @@
 		<h4>Is Ben coding right now? <br/> <span class = "red"> Indicators:</span> </h4>
 		<ul>
 			<li>Mumble: <a href="mumble://206.217.198.148:6132"><span class="red" id="mumble-status"></span></a></li>
-			<li title="Floobits is a realtime coding environ, you can code with me easy and free!">Floobits:<a href="https://floobits.com/Sammons/" class="green"><br/></a><a href="https://floobits.com/Sammons/devrecord/redirect">
+			<li title="Floobits is a realtime coding environ, you can code with me easy and free!">Floobits:<a href="https://floobits.com/Sammons/" class="green"><br/></a><ua href="https://floobits.com/Sammons/devrecord/redirect">
   			<img alt="Floobits status" width="100" height="40" src="https://floobits.com/Sammons/devrecord.png" />
 			</a><br/><span class="small">(if it says info, no one is there)</span></li>
 		</ul>
@@ -147,14 +184,10 @@
 
 	</div>
 
-	<div class = "subject">
+	<div class = "subject" id="spark-ui">
 		<h4>Spark Console</h4>
-		<p id="words">
-			
-		</p>
-		<button id="blue">BLUE</button>
-		<button id="red">RED</button>
-		<button id="green">GREEN</button>
+
+
 	</div>
 
 </div>

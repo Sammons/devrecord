@@ -1,37 +1,56 @@
 var net = require('net');
 
-var sparkLord = {
-	 port : 6000 // default port, completely arbitrary
-	,socks: {}
-	,messageQs: {}
+
+var initSparkLord = function() {
+	var sparkLord = {
+		 port : 6000 // default port, completely arbitrary
+		,socks: {}
+		,messageQs: {}
+		,socketCount: 0
+	}
+
+	sparkLord.server = net.createServer(function(socket) {
+		if (sparkLord.socketCount > 15) {
+			sparkLord.server.close();
+			for (var i in sparkLord.socks) sparkLord[i].destroy();// no need to delete, they are gone on the next line
+			sparkLord = initSparkLord();
+		}
+		socket.name = 'james' //for now
+		socket.identifier = sparkLord.socketCount; 
+		console.log('socket opened from '+socket.address().address)
+		sparkLord.socks[socket.identifier] = socket;
+		sparkLord.messageQs[socket.identifier] = [];
+
+		sparkLord.socketCount++;
+
+		socket.on('error',function(bulll) {//by virtue of having this, the server will not crash on socket error
+			console.log(bulll);
+		})
+
+		socket.on('data',function(chunk) {
+			sparkLord.messageQs[socket.identifier].push(chunk);
+		})
+
+		socket.on('close',function(args) { 
+			sparklord.socketCount--;
+			console.log('socket closed '+socket.identifier);
+			delete sparkLord.socks[socket.identifier];
+		});
+	
+	});
+	sparkLord.server.listen(sparkLord.port);
+
+
+	return sparkLord;
 }
 
-var socket_counter = 0;
-sparkLord.server = net.createServer(function(socket) {
-	
-	socket.identifier = socket_counter++; 
-	socks[socket.identifier] = socket;
-	sparkLord.messageQs[socket.identifier] = [];
-
-	socket.on('error',function(bulll) {//by virtue of having this, the server will not crash on socket error
-		console.log(bulll);
-	})
-
-	socket.on('data',function(chunk) {
-		sparkLord.messageQs[socket.identifier].push(chunk);
-	})
-
-	socket.on('close',function() { 
-		console.log('socket left: '+socket.address().address);
-		delete socks[socket.identifier];
-	});
-});
+var sparklord = initSparkLord();
 
 
-sparkLord.broadcast = function(sshtuff) {
-	for (var i in sparkLord.socks) {
+var broadcast = function(sshtuff) {
+	for (var i in sparklord.socks) {
 		try {
-			sparkLord.socks[i].write(sshtuff,'utf8')
+			sparklord.socks[i].write(sshtuff,'utf8')
 		} catch(e) {
 			console.log('issue writing to socket', e)
 		}
@@ -41,29 +60,38 @@ sparkLord.broadcast = function(sshtuff) {
 /* if this function had a name it would be
    add_spark_endpoints_to(app) */
 
-function issue_color_command(r, g, b) {
-
-	sparkLord.broadcast('C'+r+''+g+''+b);
-
+function issue_color_command(sparknum, r, g, b) {
+	sparklord.socks[sparknum].write('C'+r+''+g+''+b, 'utf8');
 }
 
 module.exports = function(app) {
 
-	// rgb = red green blue = 255;235;233 for example
-	app.post('/spark/color/:rgb',function( req, res ) {
-		var matches = req.params.rgb.trim().match(/([0-9]{3})\;([0-9]{3})\;([0-9]{3})/);
-		if (!  (matches[0] == req.params.rgb.trim())
-			&& (matches[1]/1 =< 255 && matches[2]/1 =< 255 && matches[3]/1 =< 255)
-			&& (matches[1]/1 >= 0 && matches[2]/1 >= 0 && matches[3]/1 >= 0)
-			&&  ) return res.redirect('/fuckoff'); // coincidentally, this will give a 404
+	// rgb = red green blue = 255,235,233 for example
+	app.post('/spark/:sparkcore/:rgb',function( req, res ) {
+		if (!req.params.rgb) { res.status(404); return res.end(); }
+		var matches = req.params.rgb.trim().match(/([0-9]{3})\,([0-9]{3})\,([0-9]{3})/);
+		
+		if (matches === null) { res.status(404); return res.end(); }
 
-	issue_color_command(matches[1], matches[2], matches[3]);
+		if (!(  (matches[0] == req.params.rgb.trim())
+			&& (matches[1]/1 <= 255 && matches[2]/1 <= 255 && matches[3]/1 <= 255)
+			&& (matches[1]/1 >= 0 && matches[2]/1 >= 0 && matches[3]/1 >= 0)
+			&& !!sparklord.socks[req.params.sparkcore])) { res.status(404); return res.end(); } // coincidentally, this will give a 404
+
+	issue_color_command(req.params.sparkcore, matches[1], matches[2], matches[3]);
 
 	res.end();
 
 	})
 
-	app.get('/spark/:sparkcore',function(i,o) {
-	     
+	app.get('/spark/:sparkcore',function( req, res) {
+	     if (!!sparklord.socks[req.params.sparkcore]) { return res.end(sparklord.messageQs[req.params.sparkcore].pop()) }
+	     else { res.status(404); return res.end() }
+	})
+
+	app.get('/spark',function(req,res) {
+		var sparks = [];
+		for (var i in sparklord.socks) sparks.push({key: sparklord.socks[i].identifier, name: sparklord.socks[i].name});
+		res.end(JSON.stringify(sparks));
 	})
 }
