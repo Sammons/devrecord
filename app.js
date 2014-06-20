@@ -1,10 +1,8 @@
-var express = require('express');
-var favicon = require('serve-favicon');
-var net = require('net');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
 
-var app = express();
+var net = require('net');
+var middleware = require('./middleware.js')
+
+var app = middleware.setup_express_app();
 
 app.use(function(req,res,next){
     var ua = req.headers['user-agent'].toLowerCase();
@@ -26,8 +24,6 @@ var renderatstart = function() {
 
 var renderer = renderatstart;
 
-app.use(favicon(__dirname+'/public/images/logo.ico'));
-app.use(express.static('./public'));
 
 app.get('/', function(inc,out) {
     if (inc.is_mobile && ! /mobile/.test(inc.url)) {
