@@ -37,6 +37,7 @@ var use_production_config = function(app) {
 var use_dev_config = function() {
 	var app = express();
 	app.set('env', /* debug = */ true)
+	app.use(morgan({format: 'dev'}))
 	app.use(userAgent());
 	app.use(favicon(__dirname+'/public/images/logo.ico'));
 	app.use(ssl_tape());
