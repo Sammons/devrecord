@@ -39,6 +39,7 @@ var initSparkLord = function() {
 			delete sparkLord.socks[socket.identifier];
 		});
 		socket.on('end',function(args) {
+			console.log('ended')
 			socket.close();
 		})
 	
