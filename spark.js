@@ -30,6 +30,7 @@ var initSparkLord = function() {
 		})
 
 		socket.on('data',function(chunk) {
+			if ((chunk+'') == 'present') return;
 			sparkLord.messageQs[socket.identifier].push(chunk);
 		})
 
