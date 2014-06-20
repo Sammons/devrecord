@@ -94,7 +94,6 @@ module.exports = function(app) {
 	app.get('/spark',function(req,res) {
 		var sparks = [];
 		for (var i in sparklord.socks) {
-			if (sparklord.socks[i].isopen())
 			sparks.push({key: sparklord.socks[i].identifier, name: sparklord.socks[i].name});
 
 		}
