@@ -24,7 +24,7 @@ var initSparkLord = function() {
 		sparkLord.socketCount++;
 
 		socket.on('error',function(bulll) {//by virtue of having this, the server will not crash on socket error
-			console.log(bulll);
+			socket.close();
 		})
 
 		socket.on('data',function(chunk) {
