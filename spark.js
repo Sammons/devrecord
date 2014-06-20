@@ -42,6 +42,7 @@ var initSparkLord = function() {
 			console.log('ended')
 			socket.close();
 		})
+		socket.setTimeout(500,function() {socket.destroy()});
 	
 	});
 	sparkLord.server.listen(sparkLord.port);
