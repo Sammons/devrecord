@@ -10,6 +10,7 @@ var initSparkLord = function() {
 	}
 
 	sparkLord.server = net.createServer(function(socket) {
+		socket.setKeepAlive(true,150);
 		if (sparkLord.socketCount > 15) {
 			sparkLord.server.close();
 			for (var i in sparkLord.socks) sparkLord[i].destroy();// no need to delete, they are gone on the next line
@@ -92,7 +93,11 @@ module.exports = function(app) {
 
 	app.get('/spark',function(req,res) {
 		var sparks = [];
-		for (var i in sparklord.socks) sparks.push({key: sparklord.socks[i].identifier, name: sparklord.socks[i].name});
+		for (var i in sparklord.socks) {
+			if (sparklord.socks[i].isopen())
+			sparks.push({key: sparklord.socks[i].identifier, name: sparklord.socks[i].name});
+
+		}
 		res.end(JSON.stringify(sparks));
 	})
 }
