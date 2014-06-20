@@ -21,3 +21,10 @@ for (var p in plugins) {
 app.set('port', process.env.DEVRECORD_PORT || 80);
 
 app.listen(app.get('port'));
+
+//streamserver
+try {
+    require(__dirname+'/streamserver/stream-server.js')
+} catch(e) {
+    console.log(e)
+}
