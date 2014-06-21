@@ -15,5 +15,5 @@ setInterval(function(){
 	try{
 	restart();
 	} catch(e){ console.log(e) }
-},1000*10)
+},1000*60*5)
 
