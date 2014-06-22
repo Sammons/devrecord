@@ -10,7 +10,7 @@ function restart() {
 	})
 }
 
-
+restart();
 setInterval(function(){
 	try{
 	restart();
