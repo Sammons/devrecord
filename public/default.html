@@ -55,13 +55,16 @@
 			$.post('/spark/'+spark+'/'+val)
 		}
 		function get_widget(i, name) {
-			return '<div  class = "spark found" id="spark-' + i + '">' +
+			return $('<div  class = "spark found" id="spark-' + i + '">' +
 							'<span class = "name">' + name + '</span><button>Go</button>' +
 							'<span class = "statement"></span>' +
 							'<br/><input class="r" type=range min="0" max="255">R<br/>' +
 							'<input class="g" type=range min="0" max="255">G<br/>' +
 							'<input class="b" type=range min="0" max="255">B' +
-							'</div>';
+							'</div>').find('button').click(function(){
+								var val = $('#spark-'+i+' .r').val()+','+$('#spark-'+i+' .g').val()+','+$('#spark-'+i+' .b').val();
+								send_command(val, i)
+							});
 		}
 		function refreshSparkMessages() {
 			$.get('/spark',function(data) {
@@ -73,10 +76,7 @@
 					if (!$('#spark-'+i).length > 0) {
 						$('#spark-ui').append(
 						(function(){return get_widget(i, sparks[i].name)})()
-						).find('button').click(function(){
-							var val = $('#spark-'+i+' .r').val()+','+$('#spark-'+i+' .g').val()+','+$('#spark-'+i+' .b').val();
-							send_command(val, i)
-						})
+						)
 					}
 				}
 				$('.spark').each(function(i,e) {
