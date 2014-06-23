@@ -96,7 +96,7 @@ module.exports = function(app) {
 		console.log('recieved')
 		try {
 			var sparkid = req.params.sparkcore;
-			var colors = req.params.rgb.split(',');
+			var colors = req.params.rgb.replace('?mobile=true','').split(',');
 			var matches = true;
 			for (i in colors) {
 				if (!/^[0-9][0-9]?[0-9]?$/.test(colors[i]) && colors[i]/1 < 256) 
@@ -119,7 +119,7 @@ module.exports = function(app) {
 
 	app.get('/spark/:sparkcore',function( req, res) {
 		try {
-			res.end(JSON.stringify(sockets[req.params.sparkcore].name));
+			res.end(JSON.stringify(sockets[req.params.sparkcore.replace('?mobile=true','')].name));
 		} catch (e) {
 
 		}
