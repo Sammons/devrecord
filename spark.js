@@ -72,7 +72,7 @@ var server = net.createServer( function( socket ) {
 	setInterval(function(){ 
 		try{
 			socket.write('Z','utf8')
-			if ((Date.now() - socket.last_recieved) > 1000) socket.emit("close");
+			if ((Date.now() - socket.last_recieved) > 2000) socket.emit("close");
 		} catch (e) {
 			socket.emit("close");
 		}
