@@ -66,7 +66,7 @@
 						$('#spark-'+i).addClass('found');
 						if (!$('#spark-'+i).length > 0)
 						(function() {
-						$('#spark-ui').append($(
+						$('#spark-ui').append(
 							'<div  class = "spark found" id="spark-' + i + '">' +
 							'<span class = "name">' + sparks[i].name + '</span><button>Go</button>' +
 							'<span class = "statement"></span>' +
@@ -77,7 +77,7 @@
 						).find('button').click(function(){
 							var val = $('#spark-'+i+' .r').val()+','+$('#spark-'+i+' .g').val()+','+$('#spark-'+i+' .b').val();
 							send_command(val, i)
-						}))
+						})
 						
 						})()
 					}
