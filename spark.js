@@ -95,7 +95,7 @@ module.exports = function(app) {
 			}
 			if (matches) {
 				if (!!sockets[sparkid]) {
-					console.log('C'+colors.join(''))
+					console.log('C'+colors.join(','))
 					sockets[sparkid].write('C'+colors.join(','));
 				}
 			} else {
@@ -110,7 +110,6 @@ module.exports = function(app) {
 
 	app.get('/spark/:sparkcore',function( req, res) {
 		try {
-			console.log(JSON.stringify(sockets[req.params.sparkcore].name))
 			res.end(JSON.stringify(sockets[req.params.sparkcore].name));
 		} catch (e) {
 
@@ -120,7 +119,7 @@ module.exports = function(app) {
 	app.get('/spark',function(req,res) {
 		var socketDetails = [];
 		for (var i in sockets) {
-			socketDetails.push({ name: sockets[i].name })
+			socketDetails.push({ name: 'spark-'+i+'  ' });
 		}
 		res.end(JSON.stringify(socketDetails));
 	})
