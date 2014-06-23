@@ -68,6 +68,11 @@ var server = net.createServer( function( socket ) {
 	console.log('socket opened:',socket.address());
 	sockets.push(socket);
 	initSocket.call(socket);
+	setInterval(function(){ 
+		try{socket.write('Z','utf8')} catch (e) {
+			socket.emit("close");
+		}
+	},1000);
 } ).listen(options.port);
 
 
