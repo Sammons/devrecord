@@ -75,7 +75,8 @@
 							'<input class="b" type=range min="0" max="255">B' +
 							'</div>'
 						).find('button').click(function(){
-							var val = $('#spark-'+i+' .r').val()+','+$('#spark-'+i+' .g').val()+','+$('#spark-'+i+' .b').val();
+
+							var val = $((function(){return '#spark-'+i+' .r'})()).val()+','+$((function(){return '#spark-'+i+' .g'})()).val()+','+$((function(){return '#spark-'+i+' .b'})()).val();
 							send_command(val, i)
 						}))
 						
