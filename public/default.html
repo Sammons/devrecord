@@ -54,33 +54,31 @@
 		function send_command(val, spark) {
 			$.post('/spark/'+spark+'/'+val)
 		}
-
+		function get_widget(i, name) {
+			return '<div  class = "spark found" id="spark-' + i + '">' +
+							'<span class = "name">' + name + '</span><button>Go</button>' +
+							'<span class = "statement"></span>' +
+							'<br/><input class="r" type=range min="0" max="255">R<br/>' +
+							'<input class="g" type=range min="0" max="255">G<br/>' +
+							'<input class="b" type=range min="0" max="255">B' +
+							'</div>';
+		}
 		function refreshSparkMessages() {
 			$.get('/spark',function(data) {
 				console.log(data);
 				var sparkArry = [];
 				var sparks = JSON.parse(data);
 				for (var i in sparks) {
-					var uis = $('.spark');
-					for (var j in uis) {
-						$('#spark-'+i).addClass('found');
-						if (!$('#spark-'+i).length > 0)
-						(function() {
+					$('#spark-'+i).addClass('found');
+					if (!$('#spark-'+i).length > 0)
+					(function() {
 						$('#spark-ui').append(
-							'<div  class = "spark found" id="spark-' + i + '">' +
-							'<span class = "name">' + sparks[i].name + '</span><button>Go</button>' +
-							'<span class = "statement"></span>' +
-							'<br/><input class="r" type=range min="0" max="255">R<br/>' +
-							'<input class="g" type=range min="0" max="255">G<br/>' +
-							'<input class="b" type=range min="0" max="255">B' +
-							'</div>'
+						(function(){get_widget(i, sparks[i].name)})()
 						).find('button').click(function(){
 							var val = $('#spark-'+i+' .r').val()+','+$('#spark-'+i+' .g').val()+','+$('#spark-'+i+' .b').val();
 							send_command(val, i)
 						})
-						
-						})()
-					}
+					})()
 				}
 				$('.spark').each(function(i,e) {
 					if (!$(e).hasClass('found')) $(e).remove();
