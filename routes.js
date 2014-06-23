@@ -23,7 +23,7 @@ var add_html_routes = function(app) { // routes that serve html
 	
 	var pages = {};//object for storing pages
 
-	pages['home'] = get_renderer(__dirname+'/public/default.html', true);// ok to be synchronous here since its only on startup
+	pages['home'] = get_renderer(__dirname+'/public/default.html', false);// ok to be synchronous here since its only on startup
 	pages['404']  = function(req, res) { res.status(404), res.end(); };
 
 	app.get('/',function(req,res) {

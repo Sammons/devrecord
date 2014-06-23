@@ -67,22 +67,17 @@
 						(function() {
 						$('#spark-ui').append(
 							'<div  class = "spark found" id="spark-' + i + '">' +
-							'<span class = "name">' + sparks[i].name + '</span>' +
+							'<span class = "name">' + sparks[i].name + '</span><button>Go</button>' +
 							'<span class = "statement"></span>' +
-							'<input type=text placeholder="255,255,255 (r,g,b)">' +
-							'<button>Go</button></div>'
+							'<br/><input class="r" type=range min="0" max="255">R<br/>' +
+							'<input class="g" type=range min="0" max="255">G<br/>' +
+							'<input class="b" type=range min="0" max="255">B' +
+							'</div>'
 						).find('button').click(function(){
-							var val = $('#spark-'+i+' input').val();
-							$('#spark-'+i+' input').text('').val('');
+							var val = $('#spark-'+i+' .r').val()+','+$('#spark-'+i+' .g').val()+','+$('#spark-'+i+' .b').val();
 							send_command(val, i)
 						})
-						$('#spark-'+i+' input').keypress(function(e){
-							if (e.keyCode == 13) {
-								var val = $('#spark-'+i+' input').val();
-								$('#spark-'+i+' input').text('').val('');
-								send_command(val, i)
-							}
-						})
+						
 						})()
 					}
 				}

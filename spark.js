@@ -43,7 +43,7 @@ var dataHandler = function( data ) {
 }
 
 function initSocket() {
-	this.write('welcome','utf8');
+	this.write('Z','utf8');
 	this.setTimeout('1000');
 	this.on( "connect", ignoreHandler( "connect") );
 	this.on( "data",    dataHandler               );
