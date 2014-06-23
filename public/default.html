@@ -57,6 +57,7 @@
 
 		function refreshSparkMessages() {
 			$.get('/spark',function(data) {
+				console.log(data);
 				var sparkArry = [];
 				var sparks = JSON.parse(data);
 				for (var i in sparks) {

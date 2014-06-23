@@ -35,7 +35,7 @@ var dataHandler = function( data ) {
 		var command_format = /(^.*?):(.*$)/g
 		var tokens = data.split(command_format);
 		if (tokens == null || tokens.length != 4) {
-			; /*console.log('not a message',tokens);*/
+			this.last_recieved = Date.now(); /*console.log('not a message',tokens);*/
 		} else {
 			if (!(this.emit(tokens[1],tokens[2]))) ; /*console.log('message ignored');*/
 		}
@@ -45,6 +45,7 @@ var dataHandler = function( data ) {
 function initSocket() {
 	this.write('Z','utf8');
 	this.setTimeout('1000');
+	this.last_recieved = Date.now();
 	this.on( "connect", ignoreHandler( "connect") );
 	this.on( "data",    dataHandler               );
 	this.on( "timeout", destroyHandler            );
@@ -69,10 +70,13 @@ var server = net.createServer( function( socket ) {
 	sockets.push(socket);
 	initSocket.call(socket);
 	setInterval(function(){ 
-		try{socket.write('Z','utf8')} catch (e) {
+		try{
+			socket.write('Z','utf8')
+			if ((Date.now() - socket.last_recieved) > 1000) socket.emit("close");
+		} catch (e) {
 			socket.emit("close");
 		}
-	},1000);
+	},800);
 } ).listen(options.port);
 
 
