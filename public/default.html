@@ -70,15 +70,14 @@
 				var sparks = JSON.parse(data);
 				for (var i in sparks) {
 					$('#spark-'+i).addClass('found');
-					if (!$('#spark-'+i).length > 0)
-					(function() {
+					if (!$('#spark-'+i).length > 0) {
 						$('#spark-ui').append(
-						(function(){get_widget(i, sparks[i].name)})()
+						(function(){return get_widget(i, sparks[i].name)})()
 						).find('button').click(function(){
 							var val = $('#spark-'+i+' .r').val()+','+$('#spark-'+i+' .g').val()+','+$('#spark-'+i+' .b').val();
 							send_command(val, i)
 						})
-					})()
+					}
 				}
 				$('.spark').each(function(i,e) {
 					if (!$(e).hasClass('found')) $(e).remove();
@@ -87,7 +86,7 @@
 			})
 		}
 
-		setInterval(refreshSparkMessages,120);
+		setInterval(refreshSparkMessages,400);
 
 		function command(com) {
 			$.get('/'+com);
