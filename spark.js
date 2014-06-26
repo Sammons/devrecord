@@ -93,7 +93,7 @@ module.exports = function(app) {
 
 	// rgb = red green blue = 255,235,233 for example
 	app.post('/spark/:sparkcore/:rgb',function( req, res ) {
-		console.log('recieved')
+		console.log('server recieved command from client')
 		try {
 			var sparkid = req.params.sparkcore;
 			var colors = req.params.rgb.replace('?mobile=true','').split(',');
@@ -104,8 +104,9 @@ module.exports = function(app) {
 			}
 			if (matches) {
 				if (!!sockets[sparkid]) {
-					console.log('C'+colors.join(','))
-					sockets[sparkid].write('C'+colors.join(','));
+					colors.splice(2);
+					console.log('P'+colors.join(';')+';')
+					sockets[sparkid].write('P'+colors.join(';')+';');
 				}
 			} else {
 				res.status(404);
