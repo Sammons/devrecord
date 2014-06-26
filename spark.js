@@ -25,6 +25,7 @@ var destroyHandler = function() {
 }
 
 var dataHandler = function( data ) { 
+	this.last_recieved = Date.now(); /*console.log('not a message',tokens);*/
 	data = (data+'').trim();
 	/* console.log( this.address(), "sent us", data ); */
 
@@ -35,7 +36,6 @@ var dataHandler = function( data ) {
 		var command_format = /(^.*?):(.*$)/g
 		var tokens = data.split(command_format);
 		if (tokens == null || tokens.length != 4) {
-			this.last_recieved = Date.now(); /*console.log('not a message',tokens);*/
 		} else {
 			if (!(this.emit(tokens[1],tokens[2]))) ; /*console.log('message ignored');*/
 		}
@@ -72,7 +72,7 @@ var server = net.createServer( function( socket ) {
 	setInterval(function(){ 
 		try{
 			socket.write('Z','utf8')
-			if ((Date.now() - socket.last_recieved) > 2000) socket.emit("close");
+			if ((Date.now() - socket.last_recieved) > 5000) socket.emit("close");
 		} catch (e) {
 			socket.emit("close");
 		}
