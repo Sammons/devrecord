@@ -105,8 +105,8 @@ module.exports = function(app) {
 			if (matches) {
 				if (!!sockets[sparkid]) {
 					colors.splice(2);
-					console.log('A'+colors[0]+';'+'B'+colors[1]+';')
-					sockets[sparkid].write('A'+colors[0]+';'+'B'+colors[1]+';');
+					console.log('P'+colors[0]+';'+'P'+colors[1]+';')
+					sockets[sparkid].write('P'+colors[0]+';'+'P'+colors[1]+';');
 				}
 			} else {
 				res.status(404);
