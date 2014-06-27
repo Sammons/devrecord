@@ -27,7 +27,7 @@ var destroyHandler = function() {
 var dataHandler = function( data ) { 
 	this.last_recieved = Date.now(); /*console.log('not a message',tokens);*/
 	data = (data+'').trim();
-	/* console.log( this.address(), "sent us", data ); */
+	console.log( this.address(), "sent us", data ); 
 
 	var valid_message_format = /^[A-Z]\:.*?$|^1$/gi
 	
