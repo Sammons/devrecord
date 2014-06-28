@@ -80,7 +80,7 @@ var broadcast = function(sshtuff) {
 
 function issue_color_command(sparknum, r, g, b) {
 }
-
+var on = false;
 module.exports = function(app) {
 
 	// rgb = red green blue = 255,235,233 for example
@@ -95,9 +95,16 @@ module.exports = function(app) {
 					matches = false;
 			}
 			if (matches) {
+
 				if (!!sockets[sparkid]) {
 					colors.splice(2);
-					sockets[sparkid].write(':'+colors[0]+':'colors[1]);
+					if (on) {
+						on = !on;
+						sockets[sparkid].write('A');
+					} else {
+						on = !on;
+						sockets[sparkid].write('B');
+					}
 				}
 			} else {
 				res.status(404);
