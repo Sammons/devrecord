@@ -23,23 +23,15 @@ var destroyHandler = function() {
 		}
 	}
 }
-
+var socketBuffer = '';
 var dataHandler = function( data ) { 
+	socketBuffer += chunk;
+	var messages = socketBuffer.split('\r\n');
+	socketBuffer = messages.pop();
 	this.last_recieved = Date.now(); /*console.log('not a message',tokens);*/
-	data = (data+'').trim();
-	console.log( this.address(), "sent us", data ); 
 
-	var valid_message_format = /^[A-Z]\:.*?$|^1$/gi
-	
-	if (!(valid_message_format.test(data))) ; /*console.log('invalid message format');*/
-	else {
-		var command_format = /(^.*?):(.*$)/g
-		var tokens = data.split(command_format);
-		if (tokens == null || tokens.length != 4) {
-		} else {
-			if (!(this.emit(tokens[1],tokens[2]))) ; /*console.log('message ignored');*/
-		}
-	}
+	for (var i in messages)
+	console.log( this.address(), "sent us", messages[i] ); 
 }
 
 function initSocket() {
@@ -105,8 +97,7 @@ module.exports = function(app) {
 			if (matches) {
 				if (!!sockets[sparkid]) {
 					colors.splice(2);
-					console.log('P'+colors[0]);
-					sockets[sparkid].write('P'+colors[0]);
+					sockets[sparkid].write(':'+colors[0]+':'colors[1]);
 				}
 			} else {
 				res.status(404);
