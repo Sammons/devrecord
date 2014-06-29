@@ -1,4 +1,4 @@
 devrecord
 =========
 
-Devrecord? gotta see it to believe it.
+Personal website where current projects are showcased.
