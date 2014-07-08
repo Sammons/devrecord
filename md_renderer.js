@@ -33,7 +33,7 @@ var request_render = function( text, callback ) {
 var fs = require('fs');
 module.exports.renderfile = function( file, cb ) {
 	request_render(fs.readFile(file, function(err,data){
-		request_render(data, cb);
+		request_render(data+'', cb);
 	}))
 }
 
