@@ -1,8 +1,8 @@
-#Welcome
+# Welcome
 
 This is just a test post
 
-but here is some code
+but here is some code ::
     
     var count = 0;
     var a = b = function( fun ) {
