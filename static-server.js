@@ -28,5 +28,7 @@ app.get('/pushed',function(req,res){
 	refresh_views();
 })
 
+refresh_views();
+
 module.exports = app;
 module.exports.refresh_views = refresh_views;
