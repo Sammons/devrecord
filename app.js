@@ -6,6 +6,7 @@ var static_app = require('./static-server.js');
 
 var TLD = 'localhost'
 
+app.use(morgan('default'))
 app.use(vhost(TLD, static_app));
 
 server.listen(process.env.PORT || 3000);

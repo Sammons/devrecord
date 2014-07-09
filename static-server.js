@@ -6,6 +6,7 @@ app.use(express.static('public'));
 var view_cache = {};
 var index = '';
 function refresh_views( most_recent_post_filename ) {
+	console.log('index pointed at', most_recent_post_filename);
 	var views = fs.readdirSync('views');
 	for (var i in views) {
 		view_cache[ views[i].replace('.html','') ] = fs.readFileSync( 'views/'+views[ i ] , 'utf8');
