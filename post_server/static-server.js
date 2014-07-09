@@ -2,14 +2,14 @@ var fs = require('fs')
 var express = require('express');
 var post_gatherer = require('./post-gatherer.js');
 var app = express();
-app.use(express.static('public'));
+app.use(express.static('post_server/public'));
 var view_cache = {};
 var index = '';
 function refresh_views( most_recent_post_filename ) {
 	console.log('index pointed at', most_recent_post_filename);
-	var views = fs.readdirSync('views');
+	var views = fs.readdirSync('post_server/views');
 	for (var i in views) {
-		view_cache[ views[i].replace('.html','') ] = fs.readFileSync( 'views/'+views[ i ] , 'utf8');
+		view_cache[ views[i].replace('.html','') ] = fs.readFileSync( 'post_server/views/'+views[ i ] , 'utf8');
 	}
 	for (var i in view_cache) {
 		var route = (function(){return i; })();

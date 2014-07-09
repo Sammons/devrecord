@@ -3,7 +3,7 @@ var ejs = require('ejs');
 var fs = require('fs');
 
 
-var template = fs.readFileSync('templates/post.ejs')+'';
+var template = fs.readFileSync('post_server/templates/post.ejs')+'';
 var user = "Sammons"
 var completed_callback = null;
 var latest_file = {when:0}
