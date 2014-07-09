@@ -8,7 +8,6 @@ var view_cache = {};
 function refresh_views() {
 	var views = fs.readdirSync('views');
 	for (var i in views) {
-		if (!view_cache[ views[i].replace('.html','') ])
 		view_cache[ views[i].replace('.html','') ] = fs.readFileSync( 'views/'+views[ i ] , 'utf8');
 	}
 	for (var i in view_cache) {
