@@ -27,7 +27,7 @@ function render_post( file, files, callback ) {
 			name: file.name.toLowerCase().replace(' ','-').replace('.md',''),
 		 	when: Date.parse(file.meta['last-modified'])/1000
 		 }
-	fs.writeFile('views/'+file.name.toLowerCase().replace(' ','-').replace('.md','.html')
+	fs.writeFile('post_server/views/'+file.name.toLowerCase().replace(' ','-').replace('.md','.html')
 		, ejs.render(template
 			, {
 				body: file.content
