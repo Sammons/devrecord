@@ -1,134 +1,70 @@
 var net = require('net');
+var express = require('express');
+var EventEmitter = require('events').EventEmitter;
+var sparkapp = express();
 
-var sockets = [];
+var sparkgatherer = net.createServer();
+var sparkmanager = new EventEmitter();
+sparkmanager.sockets = [];
 
-// for fun, right?
-function initpush(obj, key, elem) {
-	if (!obj[key]) obj[key] = [];
-	obj[key].push(elem);
+sparkgatherer.on('error',
+	function(e) {
+		console.log('spark server error',e);
+	})
+
+sparkgatherer.on('close', 
+	function() {
+		console.log('spark server closed');
+	})
+
+sparkgatherer.on('connection', 
+	function(socket) {
+		console.log('spark server recieved connection',JSON.stringify(socket.address()));
+		sparkmanager.emit('connection', socket);
+	})
+
+
+/* spark command logic here */
+
+var socket_recieved_data = function( data ) {
+	console.log('socket recieved data',data);
 }
 
-var connectedHandler = function() { }
+sparkmanager.on('connection', 
+	function(socket) {
+		sparkmanager.sockets.push(socket);
+		socket.on('data',function(data) {
+			socket_recieved_data.call(socket, data);
+		})
+	})
 
-var ignoreHandler = function( evt ) { 
-	return function() { console.log('event ignored '+evt) } 
-};
+/* spark commands end */
 
-var destroyHandler = function() {
-	for (var i in sockets) {
-		if (sockets[i] == this) {
-			sockets.splice(i);
-			console.log('socket closed')
-			try{ this.destroy(); } catch(e) {}
-		}
-	}
-}
-var socketBuffer = '';
-var dataHandler = function( data ) { 
-	socketBuffer += chunk;
-	var messages = socketBuffer.split('\r\n');
-	socketBuffer = messages.pop();
-	this.last_recieved = Date.now(); /*console.log('not a message',tokens);*/
-
-	for (var i in messages)
-	console.log( this.address(), "sent us", messages[i] ); 
-}
-
-function initSocket() {
-	this.write('Z','utf8');
-	this.setTimeout('1000');
-	this.last_recieved = Date.now();
-	this.on( "connect", ignoreHandler( "connect") );
-	this.on( "data",    dataHandler               );
-	this.on( "timeout", destroyHandler            );
-	this.on( "close",   destroyHandler            );
-	this.on( "end",     destroyHandler            );
-	this.on( "error",   destroyHandler            );
-
-	this.dogtags = {};
-
-}
-
-var options = {
-	 port : 6000 // default port, completely arbitrary
-	,socks: {}
-	,messageQs: {}
-	,socketCount: 0
-}
-
-
-var server = net.createServer( function( socket ) {
-	console.log('socket opened:',socket.address());
-	sockets.push(socket);
-	initSocket.call(socket);
-	setInterval(function(){ 
-		try{
-			socket.write('Z','utf8')
-			if ((Date.now() - socket.last_recieved) > 5000) socket.emit("close");
-		} catch (e) {
-			socket.emit("close");
-		}
-	},800);
-} ).listen(options.port);
-
-
-
-var broadcast = function(sshtuff) {
-}
-/* if this function had a name it would be
-   add_spark_endpoints_to(app) */
-
-function issue_color_command(sparknum, r, g, b) {
-}
-var on = false;
-module.exports = function(app) {
-
-	// rgb = red green blue = 255,235,233 for example
-	app.post('/spark/:sparkcore/:rgb',function( req, res ) {
-		console.log('server recieved command from client')
-		try {
-			var sparkid = req.params.sparkcore;
-			var colors = req.params.rgb.replace('?mobile=true','').split(',');
-			var matches = true;
-			for (i in colors) {
-				if (!/^[0-9][0-9]?[0-9]?$/.test(colors[i]) && colors[i]/1 < 256) 
-					matches = false;
-			}
-			if (matches) {
-
-				if (!!sockets[sparkid]) {
-					// colors.splice(2);
-					if (on) {
-						on = !on;
-						sockets[sparkid].write('A');
-					} else {
-						on = !on;
-						sockets[sparkid].write('B');
-					}
-				}
-			} else {
-				res.status(404);
-			}
-
-		} catch (e) {
-			console.log('msgerr',e);
-		}
+sparkapp.get('/',
+	function(req,res) {
+		res.json({
+			'message':'you have reached the sparkcore server aspect of devrecord',
+			'resource':'nothing at this url but a helpful note'
+		});
 		res.end();
 	})
 
-	app.get('/spark/:sparkcore',function( req, res) {
-		try {
-			res.end(JSON.stringify(sockets[req.params.sparkcore.replace('?mobile=true','')].name));
-		} catch (e) {
-
-		}
+sparkapp.get('/:sparks',
+	function(req,res){
+		res.json({'message':'this is the list of all available sparks','resource':'unsupported endpoint'});
+		res.end();
 	})
 
-	app.get('/spark',function(req,res) {
-		var socketDetails = [];
-		for (var i in sockets) {
-			socketDetails.push({ name: 'spark-'+i+'  ' });
-		}
-		res.end(JSON.stringify(socketDetails));
-	})
-}
+sparkapp.get('/:spark/:command',function(req,res){
+	res.json({
+		'message':'this is the post / get endpoint to issue commands to sparks',
+		'resource':'unsupported'
+	});
+	res.end();
+})
+
+module.exports = sparkapp;
+
+
+
+
