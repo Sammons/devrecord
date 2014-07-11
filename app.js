@@ -1,30 +1,12 @@
+var vhost = require('vhost');
+var morgan = require('morgan')
+var app = require('express')();
+var server = require('http').Server(app);
+var post_server = require('./post_server/static-server.js');
 
-var middleware = require('./middleware.js')
-var routes     = require('./routes.js')
+var TLD = 'devrecord.com'
 
-var app = middleware.setup_express_app();
+app.use(morgan('default'))
+app.use(vhost(TLD, post_server));
 
-routes.add_html_routes(app);
-routes.add_json_routes(app);
-
-plugins = ['spark.js'];
-
-//plergins
-for (var p in plugins) {
-    try {
-        require(__dirname+'/'+plugins[p])(app);
-    } catch(e) {
-        console.log('module failed to load '+plugins[p], e);
-    }
-}
-
-app.set('port', process.env.DEVRECORD_PORT || 80);
-
-app.listen(app.get('port'));
-
-//streamserver
-try {
-    require(__dirname+'/streamserver/stream-server.js')
-} catch(e) {
-    console.log(e)
-}
+server.listen(process.env.PORT || 3000);
