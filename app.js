@@ -3,6 +3,8 @@ var morgan = require('morgan')
 var app = require('express')();
 var server = require('http').Server(app);
 var post_server = require('./post_server/static-server.js');
+var spark_server = require('./sparkcore_server/spark.js');
+var camera_server = require('./camera_server/stream-server.js');
 
 var TLD = 'devrecord.com'
 
