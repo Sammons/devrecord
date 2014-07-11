@@ -6,7 +6,10 @@ var post_server = require('./post_server/static-server.js');
 
 var TLD = 'devrecord.com'
 
+app.get('/',function(i,o){o.redirect('http://posts.devrecord.com');});
+app.get('/ben',function(i,o){o.redirect('http://ben.devrecord.com');});
+
 app.use(morgan('default'))
-app.use(vhost(TLD, post_server));
+app.use(vhost("posts.devrecord.com", post_server));
 
 server.listen(process.env.PORT || 3000);
