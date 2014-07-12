@@ -37,9 +37,8 @@ function render_post( file, files, callback ) {
 }
 
 function render_posts_from_ejs( files ) {
-	var processes_sent = 0;
+	var processes_sent = files.length;
 	for (var i in files) {
-		processes_sent++;
 		render_post(files[i], files
 			, function() {
 				processes_sent--;
@@ -51,13 +50,13 @@ function render_posts_from_ejs( files ) {
 	}
 }
 function render_posts_from_md( files ) {
-	var processes_sent = 0;
+	var processes_sent = files.length;
 	for (var i in files) {
-		processes_sent++;
 		render_markdown(files[i].content
 			, function( err, res ) {
 				if (res.statusCode !== 200) return console.log('error with md request');
 				files[i].content = res.data
+				console.log(res.data)
 				processes_sent--;
 				if (processes_sent === 0) {
 					render_posts_from_ejs( files );
