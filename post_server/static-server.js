@@ -25,7 +25,7 @@ function refresh_views( most_recent_post_filename ) {
 		res.end( index );
 	})
 }
-app.get('/pushed',function(req,res){
+app.post('/pushed',function(req,res){
 	res.end();
 	console.log('refreshing posts and views');
 	post_gatherer.refresh_posts(refresh_views);
