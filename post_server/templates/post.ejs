@@ -27,10 +27,13 @@
 	     <%- body %>
       </section>
       <section>
+        <h3>Other Posts:</h3>
         <ul>
         <% for (var i in posts) { %>
-        <li><%= posts[i].meta['last-modified'] %> :
-        <%= posts[i].name.replace('.md','') %></li>
+          <li><a href="/<%= posts[i].name %>">
+              <%= posts[i].name.replace('.md','') %>
+              </a>    <%= posts[i].meta['last-modified'] %>
+          </li>
         <% } %>
         </ul>
         <div id="disqus_thread"></div>
