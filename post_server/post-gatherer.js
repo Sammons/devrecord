@@ -117,7 +117,7 @@ function get_file_contents( callback ) {
 						md_files.push(files[i]);
 						
 						requests_sent--;
-						if (requests_sent === 0) render_files_from_markdown(md_files);
+						if (requests_sent === 0) callback ( md_files );
 					}); 
 				}
 			}
@@ -140,10 +140,10 @@ module.exports.refresh_posts = function( onfinished ) {
 	var sequence_position = 0;
 	var next = function( files ) {
 		sequence_position++;
-		if ( sequence[ i ] ) sequence[ i ] (files
+		if ( sequence[ sequence_position ] ) sequence[ sequence_position ] (files
 			, function( files ) {
 				next( files );
-		})
+			})
 		else return sequence_position = 0;
 	}
 
