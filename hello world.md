@@ -1,7 +1,11 @@
 # Hello World!
 
-Devrecord is back! At least for a little while. In the future the apex domain devrecord.com will be stabilized. In the past it has been mizerably dynamic and down (sometimes).
+Devrecord is back!
 
-Information about ben has been relocated to ben.devrecord.com.
+At least for a few months. In the future the apex domain devrecord.com will be stabilized. In the past it has been miserably dynamic and down (sometimes).
 
-Cheers!
+Information about ben has been relocated to <a href="http://ben.devrecord.com">ben.devrecord.com</a>.
+
+Cheers, and best wishes
+
+    Ben Sammons
