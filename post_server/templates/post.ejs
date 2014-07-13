@@ -30,9 +30,13 @@
         <h3>Other Posts:</h3>
         <ul>
         <% for (var i in posts) { %>
-          <li><a href="/<%= posts[i].name %>">
-              <%= posts[i].name.replace('.md','') %>
-              </a>    <%= posts[i].meta['last-modified'] %>
+          <li>
+              <a href="/<%= posts[i].name %>">
+                <%= posts[i].name.replace('.md','') %>
+              </a>
+              <span class="ra">
+              <%= posts[i].meta['last-modified'] %>
+              </span>
           </li>
         <% } %>
         </ul>
