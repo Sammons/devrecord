@@ -31,8 +31,9 @@
         <ul>
         <% for (var i in posts) { %>
           <li>
-              <a href="/<%= posts[i].name %>">
-                <%= posts[i].name.replace('.md','') %>
+              <% var name = posts[i].name.replace('.md','').replace(' ','-'); %>
+              <a href="/<%= name %>">
+                <%= name %>
               </a>
               <span class="ra">
               <%= posts[i].meta['last-modified'] %>
