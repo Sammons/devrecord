@@ -27,10 +27,12 @@
 	     <%- body %>
       </section>
       <section>
+        <ul>
         <% for (var i in posts) { %>
-        <%if (posts[i].meta) %><%= posts[i].meta %>
-        <%= posts[i].name %>
+        <li><%= posts[i].meta['last-modified'] %> :
+        <%= posts[i].name.replace('.md','') %></li>
         <% } %>
+        </ul>
         <div id="disqus_thread"></div>
         <script type="text/javascript">
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
