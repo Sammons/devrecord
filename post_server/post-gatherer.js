@@ -2,9 +2,13 @@ var githubapi = require('github');
 var ejs = require('ejs');
 var fs = require('fs');
 
+var options = {
+	 repo: "devrecord"
+	,user: "Sammons"
+	,branch: "posts"
+}
 
 var template = fs.readFileSync('post_server/templates/post.ejs')+'';
-var user = "Sammons"
 var completed_callback = null;
 var latest_file = {when:0}
 var github = new githubapi({
@@ -36,7 +40,7 @@ function render_post( file, files, callback ) {
 		, callback);
 }
 
-function render_posts_from_ejs( files ) {
+function render_files_from_ejs( files ) {
 	var processes_sent = files.length;
 	for (var i in files) {
 		console.log(files[i].content)
@@ -50,7 +54,7 @@ function render_posts_from_ejs( files ) {
 			})
 	}
 }
-function render_posts_from_md( files ) {
+function render_files_from_markdown( files ) {
 	var processes_sent = files.length;
 	for (var i in files) {
 		var curfile = files[i];
@@ -60,50 +64,96 @@ function render_posts_from_md( files ) {
 				curfile.content = res.data;
 				processes_sent--;
 				if (processes_sent === 0) {
-					render_posts_from_ejs( files );
+					render_files_from_ejs( files );
 				}
 			})
 	}
 }
 
-function getFile( path, branch, callback) {
-	github.repos.getContent({user:user,repo:"devrecord",path: path,ref:branch}, callback);
-}
 
 function render_markdown(text, callback ) {
 	github.markdown.render({
 		text: text,
 		mode: "gfm",
-		context: "github"+user
+		context: "github"+options.user
 	},
 	callback);
 }
 
-module.exports.refresh_posts = function( callback ) {
-	console.log('beginning refreshing github posts')
-	completed_callback = callback;
-	github.misc.rateLimit({},function(err, res) {
-		var now = Date.now()/1000;
-		var reset = res.rate.reset - now;
-		console.log('github remaining requests',res.rate.remaining,'reset in', Math.floor(reset/60), 'minutes and ',Math.round((reset/60-Math.floor(reset/60))*60), 'seconds')
-	})
-	github.repos.getContent({user:user,repo:"devrecord",path:"",ref:"posts"}, function( err, files) { 
-		if (err) return console.log(err);
-		var requests_sent = 0;
-		var post_files = [];
-		for (var i in files) {
-			if (files[i].type === 'file' && files[i].name.indexOf('.md') >= 0) {
-				requests_sent++
-				getFile( files[i].path, 'posts', function( err, res ) {
-					files[i] = res;
-					files[i].content = new Buffer(res.content, res.encoding).toString('utf8');
-					requests_sent--;
-					post_files.push(files[i]);
-					if (requests_sent === 0) render_posts_from_md(post_files);
-				}); 
-			}
+function getFile( path, callback) {
+	github.repos.getContent({
+		 user: options.user
+		,repo: options.repo
+		,path: path
+		,ref:  options.branch
+	}
+	, callback);
+}
+
+function get_file_contents( callback ) {
+	github.repos.getContent({
+			 user: options.user
+			,repo: options.repo
+			,path:""
+			,ref: options.branch
 		}
-	})
+		, function( err, files) { 
+			if (err) return console.log(err);
+			var requests_sent = 0;
+			var md_files = [];
+			for (var i in files) {
+				if ( files[i].type === 'file' && files[i].name.indexOf('.md') >= 0 ) 
+					requests_sent++;
+			}
+			for (var i in files) {
+				if ( files[i].type === 'file' && files[i].name.indexOf('.md') >= 0 ) {
+					getFile( files[i].path, function( err, res ) {
+						if (err) return console.log(err);
+						files[i] = res;
+						files[i].content = new Buffer(res.content, res.encoding).toString('utf8');
+						md_files.push(files[i]);
+						
+						requests_sent--;
+						if (requests_sent === 0) render_files_from_markdown(md_files);
+					}); 
+				}
+			}
+		})
+}
+
+module.exports.refresh_posts = function( onfinished ) {
+	console.log('beginning refreshing github posts');
+	var completed_handler = function(files) {
+		console.log( 'post gathering completed' );
+	}
+
+	var sequence = [ // each one passes the files argument to the next
+		 get_file_contents
+		,render_files_from_markdown
+		,render_files_from_ejs
+		,completed_handler
+	];
+	var sequence_position = 0;
+	var next = function( files ) {
+		sequence_position++;
+		if ( sequence[ i ] ) sequence[ i ] (files
+			, function( files ) {
+				next( files );
+		})
+		else return sequence_position = 0;
+	}
+
+	//begin the sequence
+	sequence[0]( next );
+
+
+	// completed_callback = callback;
+	// github.misc.rateLimit({},function(err, res) {
+	// 	var now = Date.now()/1000;
+	// 	var reset = res.rate.reset - now;
+	// 	console.log('github remaining requests',res.rate.remaining,'reset in', Math.floor(reset/60), 'minutes and ',Math.round((reset/60-Math.floor(reset/60))*60), 'seconds')
+	// })
+	
 }
 
 if (!module.parent) {
