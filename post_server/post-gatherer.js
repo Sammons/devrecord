@@ -40,16 +40,14 @@ function render_post( file, files, callback ) {
 		, callback);
 }
 
-function render_files_from_ejs( files ) {
+function render_files_from_ejs( files, callback ) {
 	var processes_sent = files.length;
 	for (var i in files) {
-		console.log(files[i].content)
 		render_post(files[i], files
 			, function() {
 				processes_sent--;
 				if (processes_sent === 0) {
-					if (completed_callback)	completed_callback( latest_file.name );
-					console.log("completed refreshing post from github")
+					callback( files );
 				}
 			})
 	}
@@ -69,7 +67,7 @@ function render_file_markdown(file, callback ) {
 	});
 }
 
-function render_files_from_markdown( files ) {
+function render_files_from_markdown( files, callback ) {
 	var processes_sent = files.length;
 	var rendered_files = [];
 	for (var i in files) {
@@ -78,8 +76,7 @@ function render_files_from_markdown( files ) {
 				rendered_files.push(file)
 				processes_sent--;
 				if (processes_sent === 0) {
-					console.log(rendered_files)
-					render_files_from_ejs( rendered_files );
+					callback( rendered_files );
 				}
 			})
 	}
@@ -130,7 +127,8 @@ function get_file_contents( callback ) {
 module.exports.refresh_posts = function( onfinished ) {
 	console.log('beginning refreshing github posts');
 	var completed_handler = function(files) {
-		console.log( 'post gathering completed' );
+		console.log('completed refreshing posts');
+		onfinished( latest_file, files );
 	}
 
 	var sequence = [ // each one passes the files argument to the next
