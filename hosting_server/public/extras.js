@@ -12,6 +12,7 @@ function begin() {
 	load_dependency('http://stream.devrecord.com/jsmpg.js',initialize_camera_view)
 
 	function initialize_camera_view() {
+		console.log('loading camera stuff')
 		var $showcase = $('.showcase');
 		stop_cam('press me to see the livestream...');
 		var paused = true;
