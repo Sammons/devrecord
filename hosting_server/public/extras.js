@@ -11,6 +11,7 @@ function begin() {
 	console.log('extras beginning')
 	$(document).ready(function(){
 		//dependencies
+		console.log('loading dependencies')
 		load_dependency('http://stream.devrecord.com/jsmpg.js',initialize_camera_view)
 	});
 
