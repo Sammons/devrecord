@@ -13,6 +13,7 @@ function begin() {
 	function initialize_camera_view() {
 		console.log('loading camera stuff')
 		var $showcase = $('.showcase');
+		console.log($showcase)
 		stop_cam('press me to see the livestream...');
 		var paused = true;
 		$showcase.mouseenter(
