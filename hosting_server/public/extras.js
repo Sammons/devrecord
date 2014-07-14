@@ -1,4 +1,5 @@
 function load_dependency(url, finished_cb) {
+    console.log('loading',url)
     var headTag = document.getElementsByTagName("head")[0];
     var newTag = document.createElement('script');
     newTag.type = 'text/javascript';
@@ -8,7 +9,6 @@ function load_dependency(url, finished_cb) {
 }
 
 function begin() {
-	console.log('extras beginning')
 	load_dependency('http://stream.devrecord.com/jsmpg.js',initialize_camera_view)
 
 	function initialize_camera_view() {
