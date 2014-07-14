@@ -9,7 +9,7 @@ var spark_server = require('./sparkcore_server/spark.js');
 var camera_server = require('./camera_server/camera-server.js');
 var hosting_server = require('./hosting_server/static.js');
 
-var TLD 		= 'build.devrecord.com';
+var TLD 		= 'devrecord.com';
 var myurl 		= 'ben.devrecord.com';
 var posturl 	= 'posts.devrecord.com';
 var camurl 		= 'stream.devrecord.com';
