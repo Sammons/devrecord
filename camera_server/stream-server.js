@@ -58,7 +58,7 @@ var streamServer = require('http').createServer( function(request, response) {
 	else {
 		console.log(
 			'Failed Stream Connection: '+ request.socket.remoteAddress + 
-			request.socket.remotePort + ' - wrong secret.'
+			request.socket.remotePort + ' - wrong secret. - '+params[0]
 		);
 		response.end();
 	}
