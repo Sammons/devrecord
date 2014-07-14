@@ -13,10 +13,7 @@ app.get('/widget',function(req, res) {
 		'</p>'+
 	'</canvas>'+
 	'<script type="text/javascript" src="stream.devrecord.com/jsmpg.js"></script>';
-	res.json({
-		 data: widget_html
-	});
-	res.end();
+	res.end(widget_html);
 })
 
 module.exports = app;
