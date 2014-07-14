@@ -34,9 +34,11 @@ socketServer.on('connection', function(socket) {
 });
 
 socketServer.broadcast = function(data, opts) {
-	for( var i in this.clients ) {
-		this.clients[i].send(data, opts);
-	}
+	try {
+		for( var i in this.clients ) {
+			this.clients[i].send(data, opts);
+		}
+	} catch (e) {console.log(e)}
 };
 
 

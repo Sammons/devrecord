@@ -15,6 +15,7 @@ function begin() {
 
 	function initialize_camera_view() {
 		var $showcase = $('.showcase');
+		var client, player;
 
 		$showcase.css({
 			width: '320px',
@@ -48,26 +49,31 @@ function begin() {
 					$showcase.css({
 						'background-color':'rgba(0,0,0,0)'
 					}).children().remove();
-					start_cam();
+					$('.showcase').append( $('<canvas id="videoCanv" width=240 height=360></canvas>') );
+					var canvas = $('#videoCanv')[0];
+					var ctx = canvas.getContext('2d');
+					ctx.fillStyle = 'rgba(0,0,0,0)';
+					ctx.fillRect(0,0,canvas.width, canvas.height);
+					client = new WebSocket( 'ws://stream.devrecord.com:8084' );
+					player = new jsmpeg( client, { canvas : canvas } );
 				} else {
-					initialize_camera_view();
+					if (client) client.close();
+					delete player;
 				}
 				paused = !paused;
 			})
+		setInterval(function(){
+			if (!paused) {
+				client = new WebSocket( 'ws://stream.devrecord.com:8084' );
+				player = new jsmpeg( client, { canvas : canvas } );
+			}
+		}, 10*1000)
 	}
 
-	function start_cam() {
-		$('.showcase').append( $('<canvas id="videoCanv" width=240 height=360></canvas>') );
-		var canvas = $('#videoCanv')[0];
-		var ctx = canvas.getContext('2d');
-		ctx.fillStyle = 'rgba(0,0,0,0)';
-		ctx.fillRect(0,0,canvas.width, canvas.height);
-		var client = new WebSocket( 'ws://stream.devrecord.com:8084' );
-		var player = new jsmpeg( client, { canvas : canvas } );
-		setInterval(function(){
-			client = new WebSocket( 'ws://stream.devrecord.com:8084' );
-			player = new jsmpeg( client, { canvas : canvas } );
-		}, 30*60*1000)
+	function start_cam( canvas ) {
+
+
+
 	}
 }
 
