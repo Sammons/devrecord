@@ -15,7 +15,49 @@ function begin() {
 
 	function initialize_camera_view() {
 		var $showcase = $('.showcase');
-		$showcase.append( $('<canvas id="videoCanv" width=240 height=360></canvas>') );
+
+		$showcase.css({
+			width: '320px',
+			height: '240px',
+			'background-color':'black'
+		});
+		var text = $('<div id="showcase-text"><a href="#showcase-text">press me to see the livestream...</a></div>').css({
+			width: '320px',
+			color: 'rgb(200,200,200)',
+			opacity: '0.5',
+			'font-size':'36px',
+			'text-align':'center',
+			'padding-top':'60px'
+		})
+		var paused = true;
+		$showcase.html(text)
+			.mouseenter(
+			function(){
+				$('#showcase-text').animate({
+				opacity: '1'
+				}, 300 )
+			})
+			.mouseleave(
+			function(){
+				$('#showcase-text').animate({
+					opacity: '0.5'
+				},300)
+			}).click(
+			function(e) {
+				if (paused) {
+					$showcase.css({
+						'background-color':'rgba(0,0,0,0)'
+					}).children().remove();
+					start_cam();
+				} else {
+					initialize_camera_view();
+				}
+				paused = !paused;
+			})
+	}
+
+	function start_cam() {
+		$('.showcase').append( $('<canvas id="videoCanv" width=240 height=360></canvas>') );
 		var canvas = $('#videoCanv')[0];
 		var ctx = canvas.getContext('2d');
 		ctx.fillStyle = 'rgba(0,0,0,0)';
