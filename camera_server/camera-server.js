@@ -1,4 +1,4 @@
-var stream_server = require('camera_server/stream-server.js');
+var stream_server = require('./stream-server.js');
 var express = require('express');
 
 var app = express();
