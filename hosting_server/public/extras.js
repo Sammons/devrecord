@@ -40,6 +40,7 @@ function begin() {
 					client = new WebSocket( 'ws://stream.devrecord.com:8084' );
 					player = new jsmpeg( client, { canvas : canvas } );
 					var page = [];
+					var same_count = 0;
 					player.nothing_changing_check = setInterval(function(){
 						if (!paused) {
 								var canvas = $('#videoCanv')[0];
@@ -47,14 +48,16 @@ function begin() {
 								var context = canvas.getContext('2d');
 								var data = context.getImageData(0,0,canvas.width, canvas.height);
 								for (var i = 0; i < data.data.length; i++) {
-									if (page.data && page.data[i] != data.data[i]) { 
+									if (page.data && page.data[i] != data.data[i]) {
+										same_count++;
 										page = data;
 										break; 
 									}else if (!page.data) {
 										page = data
 										break;
-									} else {
+									} else if (same_count > 10) {
 										nothing_to_see = true;
+										same_count = 0;
 										stop_cam('Nothing seems to be going on on the camera right now...');
 										page = [];
 									}
