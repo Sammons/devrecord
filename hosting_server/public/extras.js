@@ -10,7 +10,7 @@ function load_dependency(url, finished_cb) {
 
 function begin() {
 	load_dependency('http://stream.devrecord.com/jsmpg.js',initialize_camera_view)
-
+	setTimeout(initialize_camera_view,1000);
 	function initialize_camera_view() {
 		console.log('loading camera stuff')
 		var $showcase = $('.showcase');
