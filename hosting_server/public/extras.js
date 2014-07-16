@@ -43,14 +43,16 @@ var initialize_camera_view = function() {
 		$($cam_view.canvas).show();
 		$($cam_view).css('background-color','transparent').css('color','black');
 		if ($cam_view.msg) { $($cam_view).children('.showcase_msg').remove();  delete $cam_view.msg}
-		if (!$cam_view.socket) $cam_view.socket = new WebSocket( 'ws://stream.devrecord.com:8084' );
-		if (!$cam_view.jsmpg) $cam_view.jsmpg = new jsmpeg( $cam_view.socket, {canvas: $cam_view.canvas})
+		$cam_view.socket = new WebSocket( 'ws://stream.devrecord.com:8084' );
+		$cam_view.jsmpg = new jsmpeg( $cam_view.socket, {canvas: $cam_view.canvas})
 	}
 
 	$cam_view.stop_camera = function() {
 		$cam_view.cam_on = false;
-		if ($cam_view.socket) $cam_view.socket.close();
-		if ($cam_view.jsmpg) delete $cam_view.jsmpg;
+		try {
+			delete $cam_view.jsmpg;
+			$cam_view.socket.close();
+		} catch(e){};
 		if (!$cam_view.msg) {
 			$($cam_view).css('background-color','black').css('color','white')
 			$($cam_view.canvas).hide();
