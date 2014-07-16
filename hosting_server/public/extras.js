@@ -63,7 +63,7 @@ var initialize_camera_view = function() {
 							opacity: '0.5',
 							'font-size':'36px',
 							'text-align':'center',
-							'padding-top':'60px',
+							'padding-top':'30px',
 							'text-decoration':'none',
 							'cursor':'pointer'
 						})
