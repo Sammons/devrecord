@@ -5,15 +5,15 @@ var express = require('express');
 var app = express();
 var tldapp = express();
 var server = require('http').Server(app);
-var server_s = require('https').Server({
-	key:   fs.readFileSync(process.env.DEVRECORD_KEY_PATH)+'',
-	// ca:    fs.readFileSync(process.env.DEVRECORD_CERT_ROOT_PATH) + '' + fs.readFileSync(process.env.DEVRECORD_CERT_CHILD_PATH),
-	cert:  fs.readFileSync(process.env.DEVRECORD_CERT_PATH) + ''
-},app);
 var post_server = require('./post_server/static-server.js');
 var spark_server = require('./sparkcore_server/spark.js');
 var camera_server = require('./camera_server/camera-server.js');
 var hosting_server = require('./hosting_server/static.js');
+var server_s = require('https').Server({
+	key:   fs.readFileSync(process.env.DEVRECORD_KEY_PATH)+'',
+	// ca:    fs.readFileSync(process.env.DEVRECORD_CERT_ROOT_PATH) + '' + fs.readFileSync(process.env.DEVRECORD_CERT_CHILD_PATH),
+	cert:  fs.readFileSync(process.env.DEVRECORD_CERT_PATH) + ''
+},tldapp);
 
 var TLD 		= 'devrecord.com';
 var myurl 		= 'ben.devrecord.com';
