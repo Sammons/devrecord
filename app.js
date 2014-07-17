@@ -7,8 +7,8 @@ var tldapp = express();
 var server = require('http').Server(app);
 var server_s = require('https').Server({
 	key:   fs.readFileSync(process.env.DEVRECORD_KEY_PATH)+'',
-	cert:  fs.readFileSync(process.env.DEVRECORD_CERT_ROOT_PATH) 
-	      +fs.readFileSync(process.env.DEVRECORD_CERT_CHILD_PATH)
+	ca:    fs.readFileSync(process.env.DEVRECORD_CERT_ROOT_PATH),
+	cert:  fs.readFileSync(process.env.DEVRECORD_CERT_CHILD_PATH)
 	      +fs.readFileSync(process.env.DEVRECORD_CERT_PATH)
 },app);
 var post_server = require('./post_server/static-server.js');
