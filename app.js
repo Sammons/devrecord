@@ -34,4 +34,4 @@ app.use(vhost( TLD,         tldapp          ));
 app.use(vhost( 'www.'+TLD,  tldapp          ));
 server.listen( process.env.PORT || 3000 );
 
-server_s.listen( process.env.SECURE_PORT || 3443 );
+server_s.listen( process.env.SSL_PORT || 3443 );
