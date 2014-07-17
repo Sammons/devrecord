@@ -1,9 +1,16 @@
+var fs = require('fs');
 var vhost = require('vhost');
 var morgan = require('morgan')
 var express = require('express');
 var app = express();
 var tldapp = express();
 var server = require('http').Server(app);
+var server_s = require('https').Server({
+	key:   fs.readFileSync(process.env.DEVRECORD_KEY_PATH)+'',
+	cert:  fs.readFileSync(process.env.DEVRECORD_CERT_ROOT_PATH) 
+	      +fs.readFileSync(process.env.DEVRECORD_CERT_CHILD_PATH)
+	      +fs.readFileSync(process.env.DEVRECORD_CERT_PATH)
+},app);
 var post_server = require('./post_server/static-server.js');
 var spark_server = require('./sparkcore_server/spark.js');
 var camera_server = require('./camera_server/camera-server.js');
@@ -24,4 +31,7 @@ app.use(vhost( posturl, 	post_server     ));
 app.use(vhost( camurl, 		camera_server   ));
 app.use(vhost( hostingurl, 	hosting_server  ))
 app.use(vhost( TLD,         tldapp          ));
-server.listen(process.env.PORT || 3000);
+
+server.listen( process.env.PORT || 3000 );
+
+server_s.listen( process.env.SECURE_PORT || 3443 );
