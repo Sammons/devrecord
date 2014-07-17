@@ -24,11 +24,13 @@ var me = 'ben';
 
 tldapp.get('/',function(i,o){o.redirect( 'http://'+posturl );});
 tldapp.get('/'+me,function(i,o){o.redirect( 'http://'+myurl );});
-tldapp.use(function(req,res, next) {
+
+app.use(function(req,res, next) {
 	if (req.protocol == 'HTTPS') {
 		res.redirect('http://devrecord.com');
 	} else { next() }
 })
+
 app.use(morgan('default'));
 app.use(vhost( posturl, 	post_server     ));
 app.use(vhost( camurl, 		camera_server   ));
