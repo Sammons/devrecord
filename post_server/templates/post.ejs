@@ -31,7 +31,7 @@
         <ul>
         <% for (var i in posts) { %>
           <li>
-              <% var name = posts[i].name.replace('.md','').replace(' ','-'); %>
+              <% var name = posts[i].name.replace('.md','').replace(/\s/g,'-'); %>
               <a href="/<%= name %>">
                 <%= name %>
               </a>

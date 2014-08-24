@@ -16,7 +16,7 @@ function refresh_views( most_recent_post_filename ) {
 		app.get(
 		'/'+route,
 		function( req, res ) { 
-			res.end( view_cache[route] );
+			res.end( (function(){return view_cache[route];})() );
 			}
 		);
 	}
