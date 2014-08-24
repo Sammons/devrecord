@@ -4,9 +4,14 @@ The Max Slice Problem:
 
 In preparing for interviews I encountered a problem which stopped me dead. After being handed the solution I found that i *still didn't get it*. But after a few minutes of red-lining what little abused grey matter I possess, I began to realize what the intuition is.
 
-The problem (forgive the lack of mathematical or otherwise more specific descriptors):
+**The problem** (forgive the lack of mathematical or otherwise more specific descriptors):
 
-Given a list of whole numbers (integers), for example `[ 1, 2, -5, 6, -3, 4]`, what is the largest sum of a chunk of these numbers? That means if you could grab any subset of these numbers you like, with the only rule being that they are all right next to eachother, and the goal being to grab the numbers with the largest total possible, then how do you do it (in linear time, and constant storage)?
+> Given a list of whole numbers (integers), for example `[ 1, 2, -5, 6,
+> -3, 4]`, what is the largest sum of a chunk of these numbers? 
+> That means if you could grab any subset of these numbers you like, with the
+> only rule being that they are all right next to eachother, and the
+> goal being to grab the numbers with the largest total possible, then
+> how do you do it (in linear time, and constant storage)?
 
 The answer for that set is  7, the result of adding `6, -3, 4` together.
 
