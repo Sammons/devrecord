@@ -28,10 +28,10 @@ github.authenticate({
 function render_post( file, files, callback ) {
 	if (Date.parse(file.meta['last-modified'])/1000 > latest_file.when) 
 		latest_file = { 
-			name: file.name.toLowerCase().replace(' ','-').replace('.md',''),
+			name: file.name.toLowerCase().replace(/\s/g,'-').replace('.md',''),
 		 	when: Date.parse(file.meta['last-modified'])/1000
 		 }
-	fs.writeFile('post_server/views/'+file.name.toLowerCase().replace(' ','-').replace('.md','.html')
+	fs.writeFile('post_server/views/'+file.name.toLowerCase().replace(/\s/g,'-').replace('.md','.html')
 		, ejs.render(template
 			, {
 				body: file.content
