@@ -11,14 +11,10 @@ var users = require('./routes/users');
 
 var app = express();
 
-/* use handlebars */
-var handlebars = require('express-handlebars');
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
-app.engine('handlebars', handlebars({defaultLayout : 'main'}));
-app.set('view engine', 'handlebars');
+app.set('view engine', require('hbs').__express);
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
