@@ -6,25 +6,8 @@
     <script type="text/javascript" src="/Semantic-UI-1.0/dist/semantic.min.js"></script>
     <link rel="stylesheet" href="/Semantic-UI-1.0/dist/semantic.min.css"></link>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script type="text/javascript">
-    $(document).ready(function() {
-    	$('.ui.menu .item').on('click', function() {
-    		$me = $(this);
-    		$me.parent().find('.active').removeClass('active');
-    		$me.addClass('active');
-    	})
-    })
-    </script>
   </head>
   <body class="page">
-    <div class="ui menu">
-    	<a class="active item" href="#">
-    		<i class="home icon"></i> Home
-    	</a>
-    	<a class="item" href="#">
-    		<i class="github icon"></i> Projects
-    	</a>
-    </div>
     {{{body}}}
   </body>
 </html>
