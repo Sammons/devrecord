@@ -4,21 +4,24 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "build": "jsx --extension jsx public/xscripts/ public/scripts",
-    "combine": "browserify public/scripts/index/main.js -o public/bundles/index/bundle.js && browserify public/scripts/other/main.js -o public/bundles/other/bundle.js ",
-    "uglify" : "each browserify public/scripts/*/main.js"
+    "compile:js": "jsx --extension jsx public/xscripts/ public/scripts",
+    "combine:js": "browserify public/scripts/index/main.js -o public/bundles/index/bundle.js",
+    "uglify:js": "uglifyjs public/bundles/index/bundle.js -o public/bundles/index/bundle.min.js",
+    "build" : "npm run compile:js && npm run combine:js && npm run uglify:js"
   },
   "dependencies": {
     "body-parser": "~1.12.0",
     "browserify": "^10.0.0",
     "cookie-parser": "~1.3.4",
     "debug": "~2.1.1",
+    "exec-glob": "^1.2.1",
     "express": "~4.12.2",
     "hbs": "~2.9.0",
     "morgan": "~1.5.1",
     "react": "^0.13.2",
     "react-tools": "^0.13.2",
     "serve-favicon": "~2.2.0",
-    "stylus": "0.42.3"
+    "stylus": "0.42.3",
+    "uglifyjs": "^2.4.10"
   }
 }
