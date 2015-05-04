@@ -2,11 +2,14 @@
   "name": "devrecord",
   "version": "0.0.0",
   "private": true,
+  "config" : {
+    "build_dir" : "public/build"
+  },
   "scripts": {
     "start": "node ./bin/www",
-    "compile:js": "jsx --extension jsx public/xscripts/ public/scripts",
-    "combine:js": "browserify public/scripts/index/main.js -o public/bundles/index/bundle.js",
-    "uglify:js": "uglifyjs public/bundles/index/bundle.js -o public/bundles/index/bundle.min.js",
+    "compile:js": "jsx --extension jsx scripts/ $npm_package_config_build_dir",
+    "combine:js": "browserify $npm_package_config_build_dir/index/main.js > $npm_package_config_build_dir/index/bundle.js",
+    "uglify:js": "uglifyjs $npm_package_config_build_dir/index/bundle.js > $npm_package_config_build_dir/index/bundle.min.js",
     "build" : "npm run compile:js && npm run combine:js && npm run uglify:js"
   },
   "dependencies": {
