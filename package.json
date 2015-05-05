@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "node ./bin/www",
-    "compile:js": "jsx --extension jsx scripts/ public/build",
+    "compile:js": "jsx --extension jsx scripts/index/ public/build/index/",
     "combine:js": "browserify public/build/index/main.js > public/build/index/bundle.js",
     "uglify:js": "uglifyjs public/build/index/bundle.js > public/build/index/bundle.min.js",
     "build" : "npm run compile:js && npm run combine:js && npm run uglify:js"
