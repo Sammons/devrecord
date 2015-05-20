@@ -1,0 +1,10 @@
+$(document).ready(function() {
+
+$('.special.cards .image').dimmer({
+  opacity: 0.10
+})
+.on('hover',function(){ $(this).dimmer('hide') })
+.on('mouseout',function() { $(this).dimmer('show') })
+.dimmer('show');
+
+})
