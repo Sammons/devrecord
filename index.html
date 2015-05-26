@@ -105,7 +105,7 @@
           <a
             class="card with-tooltip"
             data-content="You know you want to hire me....But I like my job."
-            href="/readinglist">
+            href="#readinglist">
             <img class="ui medium dimmable image" src="/images/resume2.png" alt="resume">
             <div class="ui dimmer that-is-always-visible">
               <div class="ui bottom aligned content">
@@ -119,5 +119,20 @@
         <div class="row"></div>
       </div>
     </body>
-    <script type="text/javascript" src="/main.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+      $('.with-tooltip')
+      .popup({
+        inline   : true,
+        hoverable: true,
+        delay: {
+          show: 100,
+          hide: 10
+        }
+      });
+      $('.that-is-always-visible').dimmer({
+        opacity: 0.10
+      }).dimmer('show');
+    })
+    </script>
   </html>
